@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../components/myText.dart';
 import '../model/user_model.dart';
@@ -28,7 +29,8 @@ class _HomePageState extends State<HomePage> {
     print(widget.user!.uid);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.search),
+        backgroundColor:primaryLight,
+        child: Icon(Icons.search,color:titleColor,),
         onPressed: () {
           Navigator.push(
               context,
@@ -40,8 +42,14 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       appBar: AppBar(
-        backgroundColor: Colors.amberAccent,
-        title: const Text('Home'),
+        backgroundColor:primaryLight,
+        title:MyText(text:'ChatApp',color:titleColor,),
+        actions:   [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal:20,),
+            child: Icon(Icons.menu_rounded,color:titleColor,),
+          )
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -57,16 +65,20 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
                       dataSnap.docs[index].data() as Map<String, dynamic>);
-                  Map<String, dynamic> participants = chatRoomModel.participants!;
+                  Map<String, dynamic> participants =
+                  chatRoomModel.participants!;
                   List<String> participantsKeys = participants.keys.toList();
                   participantsKeys.remove(widget.userModel.uid);
                   if (participantsKeys.isNotEmpty) {
                     return FutureBuilder(
-                      future: FirebaseHelper.getUserById(participantsKeys[0]),
+                      future:
+                      FirebaseHelper.getUserById(participantsKeys[0]),
                       builder: (context, userData) {
-                        if (userData.connectionState == ConnectionState.done) {
+                        if (userData.connectionState ==
+                            ConnectionState.done) {
                           if (userData.hasData) {
-                            UserModel targetUser = userData.data as UserModel;
+                            UserModel targetUser =
+                            userData.data as UserModel;
                             return ListTile(
                               onTap: () {
                                 Navigator.push(
@@ -80,15 +92,25 @@ class _HomePageState extends State<HomePage> {
                                         )));
                               },
                               leading: CircleAvatar(
-                                backgroundColor: imageBgColor,
+                                backgroundColor: Colors.grey,
                                 backgroundImage: NetworkImage(
                                     targetUser.profilePic.toString()),
                               ),
-                              title: MyText(text: targetUser.name.toString()),
-                              subtitle: MyText(text: chatRoomModel.lastMessage.toString()),
+                              title: MyText(
+                                  text: targetUser.name.toString()),
+                              subtitle: MyText(
+                                  text: chatRoomModel.lastMessage
+                                      .toString()),
+                              trailing:chatRoomModel.lastMessageTime != null
+                                  ? MyText(
+                                  text: DateFormat('dd MMM yyyy, hh:mm a')
+                                      .format(chatRoomModel
+                                      .lastMessageTime!))
+                                  : null,
                             );
                           } else if (userData.hasError) {
-                            return MyText(text: 'Error loading user data');
+                            return MyText(
+                                text: 'Error loading user data');
                           } else {
                             return MyText(text: 'User not found');
                           }
@@ -115,5 +137,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-

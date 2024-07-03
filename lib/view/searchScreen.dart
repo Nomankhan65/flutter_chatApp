@@ -1,3 +1,4 @@
+import 'package:chat_app/components/colors.dart';
 import 'package:chat_app/components/myButton.dart';
 import 'package:chat_app/components/myText.dart';
 import 'package:chat_app/components/text_field.dart';
@@ -5,7 +6,6 @@ import 'package:chat_app/model/user_model.dart';
 import 'package:chat_app/view/chatScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -43,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
       {
          ChatRoomModel newChatRoom=ChatRoomModel(
            chatRoomId:uuid.v1(),
-           lastMessage:'',
+           lastMessage:'Hi there! I am using ChatApp',
            participants:{
              widget.userModel!.uid.toString():true,
              targetUser.uid.toString():true,
@@ -62,7 +62,11 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return   Scaffold(
       appBar:AppBar(
-        title:MyText(text:'Search user',),
+        iconTheme:IconThemeData(
+          color:titleColor
+        ),
+        backgroundColor:primaryLight,
+        title:MyText(text:'Search user',color:titleColor,),
 
       ),
       body:Column(

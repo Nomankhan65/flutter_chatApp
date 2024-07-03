@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+      debugShowCheckedModeBanner:false,
     );
   }
 }

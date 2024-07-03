@@ -34,7 +34,8 @@ class ChatScreen extends StatelessWidget {
         newMessage.toMap()
       );
       chatRoomModel.lastMessage=chatController.text;
-      FirebaseFirestore.instance.collection('chatRooms').doc(chatRoomModel.chatRoomId).set(chatRoomModel.toMap());
+      chatRoomModel.lastMessageTime=DateTime.now();
+      FirebaseFirestore.instance.collection('chatRooms').doc(chatRoomModel.chatRoomId).update(chatRoomModel.toMap());
       print('message sent');
       chatController.clear();
     }
@@ -43,23 +44,27 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
+        iconTheme:IconThemeData(
+          color:titleColor
+        ),
         backgroundColor:primaryLight,
-        title:ListTile(
-          leading: CircleAvatar(
-            radius:23,
-             backgroundColor:imageBgColor,
-
-             ),
-          title: MyText(
-              text:targetUser.name,
-              color: titleColor,
-              fontSize: 16,
+        title:Row(
+          children: [
+            CircleAvatar(
+              radius:22,
+              backgroundColor:imageBgColor,
+              backgroundImage:AssetImage(userModel.profilePic.toString()),
             ),
-          subtitle:MyText(
-            text:targetUser.email,
-            color: titleColor,
-            fontSize:14,
-          ),
+            const SizedBox(width:8,),
+            Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              mainAxisAlignment:MainAxisAlignment.center,
+              children: [
+                MyText(text:userModel.name.toString(),fontSize:17,color:titleColor,),
+                MyText(text:userModel.email.toString(),fontSize:13,color:Colors.black54,),
+              ],
+            ),
+          ],
         ),
 
       ),
