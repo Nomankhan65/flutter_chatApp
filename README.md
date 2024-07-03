@@ -1,4 +1,4 @@
-# chat
+# Flutter Chat Application for android ios and web
 
 A new Flutter project.
 
