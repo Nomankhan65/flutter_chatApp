@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-
 import '../components/colors.dart';
 import '../model/user_model.dart';
 
@@ -103,7 +102,7 @@ class ChatScreen extends StatelessWidget {
                                     horizontal: 10, vertical: 10),
                                 decoration: BoxDecoration(
                                   color: (currentMessage.sender == userModel.uid)
-                                      ? Colors.white
+                                      ? primary
                                       : primaryLight,
                                   borderRadius: BorderRadius.only(
                                     topLeft: const Radius.circular(12),
@@ -113,21 +112,13 @@ class ChatScreen extends StatelessWidget {
                                     bottomRight: Radius.circular(
                                         (currentMessage.sender == userModel.uid) ? 0 : 12),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(0, 1), // changes position of shadow
-                                    ),
-                                  ],
                                 ),
                                 child: MyText(
                                   text: currentMessage.text.toString(),
                                   maxlines: 5,
                                   color: (currentMessage.sender == userModel.uid)
-                                      ? Colors.black
-                                      : Colors.black87,
+                                      ? titleColor
+                                      : titleColor,
                                 ),
                               ),
                             ),
